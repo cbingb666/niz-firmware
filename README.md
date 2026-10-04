@@ -1,52 +1,62 @@
-# NIZ 66EC RGB BLE 固件逆向结果
+# NiZ 66EC RGB BLE Firmware
 
-已完成整个 APROM 更新镜像的 C + 汇编重建工程。基线版本从源码交叉编译得到的 53,584 字节镜像，以及重新生成的 177,576 字节原厂格式刷写包，均与原件逐字节一致。源码 ZIP 已在不含原固件、DLL 或 Ghidra 输出的独立目录中重新构建验证。原始四个输入文件保持不变。
+NiZ 66EC RGB BLE 键盘固件的逆向分析与可复现重建工程，基于原厂 **V1.5.1（2023-05-20）** 更新文件，提供 C + Thumb 汇编源码、离线分析工具、协议文档和验证脚本。
 
-整体程序保留可编辑 Thumb 汇编和 ROM 数据，完整扫描处理入口另提供可链接的 ARM C 版本。原厂 C 文件组织、变量名和注释无法精确恢复；原有自动 C 伪代码仍用于阅读，不能直接作为编译输入。当前原厂格式基线包可以交给配套升级软件，实机刷写、LDROM 写回及 USB/RGB/BLE 验收尚未完成；本次只读 USB 枚举未发现匹配的目标键盘。
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Python: 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)
+![Hardware: Unverified](https://img.shields.io/badge/Hardware-Unverified-orange.svg)
 
-## 从哪些文件开始阅读
+> [!WARNING]
+> 项目已完成软件构建、封装和模拟验证，**尚未完成实机刷写及键盘、RGB、BLE 功能验收**。使用前请阅读[免责声明](DISCLAIMER.md)。MIT 许可证仅适用于本项目原创内容，第三方材料的授权范围见[许可证](#许可证)。
 
-| 产物 | 用途 |
+## 目录
+
+- [功能](#功能)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [验证状态](#验证状态)
+- [刷写说明](#刷写说明)
+- [项目结构](#项目结构)
+- [文档导航](#文档导航)
+- [贡献与反馈](#贡献与反馈)
+- [许可证](#许可证)
+- [免责声明](#免责声明)
+
+## 功能
+
+- **可复现构建**：从源码生成完整 APROM 镜像和原厂格式更新包；基线镜像为 53,584 字节，更新包为 177,576 字节，均与所提供的原件逐字节一致。
+- **可编辑实现**：完整指令与 ROM 数据保存在 GNU Thumb 汇编中，扫描记录处理入口另提供可链接的 ARM C 实现。
+- **离线分析**：解包 DES 封装的 Intel HEX，提取键位表、RGB 默认值、USB 描述符和固件元数据。
+- **逆向资料**：保留固件与 HWI DLL 的反编译伪代码、函数索引、调用关系，以及 HID、UART 和更新流程说明。
+- **自动验证**：检查构建产物、封装格式、ARM 扫描行为、模拟更新接收流程和独立源码包的重建结果。
+
+工程提供两个构建版本：
+
+| 版本 | 实现 | 当前状态 |
+| --- | --- | --- |
+| `stock` | 完整汇编重建原厂程序 | 镜像与更新包均与 V1.5.1 原件逐字节一致；实机未验证 |
+| `c_scan` | 用 C 实现替换扫描处理入口，其余程序保持原有实现 | 已通过 ARM 行为对照与模拟更新验证；实机时序未验证 |
+
+原厂 C 文件结构、变量名和注释无法从二进制中精确恢复。反编译生成的 C 伪代码供阅读和分析使用，不能直接作为构建输入。片上 LDROM 和外部蓝牙模块内部固件不在本项目所分析的更新镜像内。
+
+## 环境要求
+
+| 依赖 | 要求 |
 | --- | --- |
-| [完整构建工程](firmware/README.md) | C + 汇编源码、工具链安装、独立构建、验证和刷写说明 |
-| [基线刷写包](firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin) | 原厂加密封装，与提供的 V1.5.1 刷写文件逐字节一致 |
-| [独立源码 ZIP](firmware/dist/niz-66ec-rebuild-src.zip) | 不包含原固件；解压即可安装工具链并重建 |
-| [完整验证报告](firmware/dist/verification.json) | 整镜像、封装、实际源码 ZIP 重建、ARM C 对照和模拟更新结果 |
-| [Mac 升级工具兼容性](firmware/mac_updater_compatibility.json) | V1.2 应用的设备筛选、固件格式、HID 协议及 3,352 条有效载荷对照 |
-| [完整汇编源码](firmware/src/rom.S) | 包含所有原程序指令和数据；正常构建不读取原二进制 |
-| [ARM C 扫描模块](firmware/src/scan.c) | 完整队列处理入口，实际链接进 `c_scan` 实验版本 |
-| [全部固件函数](recovered/firmware/decompiled/all_functions.c) | 完整 C 伪代码入口，按 ROM 地址排列 |
-| [主循环](recovered/firmware/decompiled/functions/0000b490_main.c) | 调度扫描、报告、配置读取和低功耗状态 |
-| [可编译扫描算法](recovered/readable/key_scan.c) | 人工整理的扫描过滤和消抖算法摘录，已与原始指令对比 |
-| [模块和地址说明](recovered/REVERSE_ENGINEERING.md) | 主要入口、存储布局和恢复范围 |
-| [通信协议](recovered/PROTOCOL.md) | HID 封装、配置命令、UART 帧和更新流程 |
-| [默认键位表](recovered/firmware/tables/default_keymap.csv) | 扫描位置、物理键编号和三个内置内部键码 |
-| [函数索引](recovered/firmware/decompiled/functions.tsv) | 264 个地址、名称、大小和推断签名 |
-| [Ghidra 汇编清单](recovered/firmware/decompiled/listing.asm) | 核查 C 伪代码；尾部含误识别数据，构建源码已修正分类 |
-| [解密镜像](recovered/firmware/firmware.bin) | 地址 0 至 0xD14F 的连续字节 |
-| [标准 Intel HEX](recovered/firmware/firmware.hex) | 保留原始记录地址和校验和 |
-| [HWI DLL 伪代码](recovered/host/decompiled/all_functions.c) | PC 端打包、流式配置读取和更新发送逻辑 |
-| [校验结果](analysis/verification/results.json) | ARM 和 x86 原始指令的交叉验证结果 |
+| Python | 推荐 3.12 或更新版本 |
+| Python 包 | 版本固定于 [requirements.txt](requirements.txt) |
+| Arm GNU Toolchain | 固定为 15.2.rel1，目标为 `arm-none-eabi` |
+| 操作系统 | 已验证 macOS arm64；其他平台的构建与模拟尚未实测 |
+| Clang | 复现 `scripts/verify_recovery.py` 的扫描算法对照时需要 |
+| Ghidra | 可选；用于重新分析和导出，已有工程使用 12.1.4 |
 
-每个函数还有独立的 `.c` 文件。`callgraph.tsv`、`references.tsv`、`symbols.tsv` 和 `memory_map.tsv` 保留调用关系、引用、符号和地址空间信息。
+工具链安装脚本针对 macOS arm64，下载地址和 SHA-256 固定于 [toolchain.lock.json](firmware/toolchain.lock.json)。其他平台需自行安装对应平台的 Arm GNU 15.2.rel1，并通过 `--toolchain` 或环境变量 `NIZ_ARM_GNU` 指定工具链安装目录或 `bin` 目录。
 
-## 已验证的结果
+## 快速开始
 
-- 五项构建验收测试全部通过。完整基线镜像及升级包与原件一致；实际源码 ZIP 可独立生成两个版本的相同镜像和升级包。
-- `c_scan` 在 ARM Cortex-M0 中与原代码对比 16,599 条扫描记录，每次调用后的全部 16 KB 全局 RAM、R4 至 R11 和 SP 一致。原 ROM 仅修改八字节入口桥，追加 384 字节 C 代码。
-- 两个重建镜像的原始更新函数分别接收全部 3,352 / 3,376 条记录，验证模拟 EEPROM 中的完整镜像、页边界、读回校验、累计和及完成标记；四类错误注入均按预期拒绝更新。
-- 全部 3,352 条解密记录通过 Intel HEX 校验；重新封装与原始 177,576 字节文件逐字节一致。
-- 用固件中 `0x00007ECC` 的 DES 函数模拟执行，10,051 个数据块全部与独立解密器一致。
-- `key_scan.c` 与 `0x00005E4C` 的原始 ARM 指令比较了 66 个键、两种 RGB 状态、共 1,320 帧阈值和消抖情况；事件、计数器和按下位图一致。这是指定用例的验证，不是对所有可能输入的等价证明。
-- 验证六个 ADC 列入口和十一种行选择状态；模拟了 HWI DLL 的原始 x86 解析函数，全部 3,352 个 HID 更新载荷与离线编码器一致。
-- 用户提供的 Mac 升级工具 V1.2 已静态确认设备筛选和更新协议匹配；按实际代码转换全部 3,352 条基线记录，有效载荷与已验证的 Windows 编码器一致。尚未运行该应用或进行实机更新。
-- 固件 264 个函数和 DLL 307 个函数均成功生成伪代码。主循环等三处 ARMCC 分支表已人工修正，两处函数内长跳转也已修正，避免把按键处理循环拆成假函数。
+获取仓库后，在仓库根目录执行以下命令。以下路径写法适用于 macOS；Windows 虚拟环境中的 Python 路径为 `.venv\Scripts\python.exe`。
 
-以上模拟校验没有写入键盘。软件构建和封装闭环已完成，实机 USB 传输、LDROM 烧录、整机时序、重启及无线功能仍需接入对应设备验收。详细步骤和当前边界见 [构建工程说明](firmware/README.md)。
-
-## 构建刷写包
-
-Git 保留四份原始输入、重建源码、静态分析结果和说明；本地工具链、虚拟环境、构建及交付目录、Ghidra 数据库和运行日志由 `.gitignore` 排除。检出仓库后，按以下步骤重新生成构建和交付产物。
+### 安装依赖与构建
 
 ```sh
 python3 -m venv .venv
@@ -54,33 +64,131 @@ python3 -m venv .venv
 .venv/bin/python firmware/setup_toolchain.py
 .venv/bin/python firmware/build.py --variant stock
 .venv/bin/python firmware/build.py --variant c_scan
+```
+
+正常构建只读取重建工程源码，不需要原始固件、DLL 或 Ghidra 输出。构建过程和下述验证脚本均不访问键盘。
+
+### 验证并生成交付包
+
+```sh
 .venv/bin/python firmware/check.py
 .venv/bin/python -m unittest discover -s tests -p 'test_firmware_build.py' -v
 .venv/bin/python firmware/release.py
 ```
 
-使用原厂升级软件时选择 `firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin`。`build/stock/firmware.bin` 是未封装镜像。实验 C 版本位于 `firmware/dist/experimental/`，硬件时序尚未验证。工具链固定为 Arm GNU 15.2.rel1；Python、工具链和跨平台安装说明见 `firmware/README.md`。
+测试会重新构建两个版本，执行 ARM 扫描对照和模拟更新验证，并检查在独立源码目录中的重建结果。`release.py` 依赖这些验证报告，还会实际解压生成的源码 ZIP，再次构建并比较产物。
 
-Windows 可使用目录内配套的 `66EC(XRGB)Ble.exe`；Mac 可使用用户提供的 `MAC键盘固件升级V1.2.dmg`，其文件格式和更新协议与基线包匹配。Mac 应用是 Intel 版本，Apple Silicon 依赖 Rosetta。具体使用步骤与验证边界见 [刷写说明](firmware/README.md#刷写和实机验收)。
+在 macOS 沙盒中，Unicorn 的 JIT 可执行内存分配可能受限；遇到相关错误时，可在普通终端中运行模拟验证。工具链离线安装及单项验证命令见[构建工程说明](firmware/README.md)。
 
-## 复现解包和算法校验
+| 生成路径 | 用途 |
+| --- | --- |
+| `firmware/build/stock/66EC_RGB_BLE_stock_rebuilt.bin` | 基线版本的原厂格式加密更新包 |
+| `firmware/build/stock/firmware.bin` | 未封装的 APROM 镜像，供分析使用 |
+| `firmware/build/stock/firmware.elf` | 带函数和地址标签的 ARM ELF |
+| `firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin` | 验证后汇总的基线更新包 |
+| `firmware/dist/experimental/66EC_RGB_BLE_c_scan_rebuilt.bin` | 实验 C 扫描版本更新包 |
+| `firmware/dist/niz-66ec-rebuild-src.zip` | 可独立构建的源码包，不含原始固件二进制或 DLL |
+| `firmware/dist/verification.json`、`firmware/dist/SHA256SUMS` | 验证报告与交付文件的散列值 |
+
+工具链、虚拟环境、`firmware/build/` 和 `firmware/dist/` 等本地产物不纳入 Git，需要按上述步骤生成。
+
+### 复现逆向分析
+
+完成依赖安装后，可在仓库根目录执行：
 
 ```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python scripts/decode_firmware.py
 .venv/bin/python scripts/inspect_firmware.py
 .venv/bin/python scripts/verify_recovery.py
 ```
 
-最后一个脚本使用 Unicorn 模拟原始 ARM/x86 指令，并调用本机 `clang` 编译扫描算法。在 macOS 沙盒中，JIT 分配执行内存可能需要单独允许在沙盒外运行。
-
-## 继续在 Ghidra 中分析
-
-本机工程保存在 `analysis/ghidra-project/NizFirmware.gpr` 和 `analysis/ghidra-project/NizHWI.gpr`，可使用 Ghidra 12.1.4 或兼容版本打开。该目录不纳入 Git；使用本地 Ghidra 安装重新创建工程并导出：
+这组命令读取仓库内的原始输入，生成解密镜像和表格，并使用 Unicorn 与 Clang 对照原始 ARM/x86 指令。若需重新建立 Ghidra 工程和导出分析结果，使用本地 Ghidra 安装路径：
 
 ```sh
 .venv/bin/python scripts/run_ghidra.py /path/to/ghidra_12.1.4_PUBLIC
 ```
 
-本次工具来自 [Ghidra 官方 12.1.4 发布包](https://github.com/NationalSecurityAgency/ghidra/releases/tag/Ghidra_12.1.4_build)，下载后核对了官方 SHA-256 `ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db`。macOS ARM64 的原生反编译组件按发布包提供的 C++ 源码在本机编译；其他机器可参照 [官方原生组件构建说明](https://github.com/NationalSecurityAgency/ghidra/blob/Ghidra_12.1.4_build/GhidraDocs/GettingStarted.md#building-native-components)。本次临时安装目录为 `/tmp/niz-ghidra-tools/ghidra_12.1.4_PUBLIC`，系统清理临时目录后需使用自己的安装。
+## 验证状态
+
+下表汇总已有验证结果；可通过上述命令重新生成构建和交付报告。
+
+| 检查项 | 已有结果 |
+| --- | --- |
+| 基线构建与封装 | 完整镜像、原厂格式更新包均与原件逐字节一致 |
+| 构建验收 | 5 项测试通过，覆盖完整构建、封装、扫描对照、模拟更新及独立源码构建 |
+| ARM C 扫描对照 | 比较 16,599 条扫描记录，每次调用后全部 16 KB 全局 RAM、R4 至 R11 和 SP 一致 |
+| 模拟更新接收 | `stock` 的 3,352 条记录与 `c_scan` 的 3,376 条记录全部通过；四类错误注入按预期拒绝更新 |
+| 离线算法与主机协议 | DES、扫描算法、ADC/行选择及 Windows HWI 更新载荷对照通过 |
+| Mac 升级工具 | V1.2 的设备筛选、文件格式与更新协议已静态分析；实际运行未验证 |
+| 实机验收 | USB 更新、LDROM 写回、重启、按键、RGB 和 BLE 功能均未验证 |
+
+模拟验证不覆盖完整硬件时序、中断并发或所有可能输入。详细边界见[构建工程说明](firmware/README.md)和[逆向分析说明](recovered/REVERSE_ENGINEERING.md)。
+
+## 刷写说明
+
+原厂升级软件应选择 **`66EC_RGB_BLE_stock_rebuilt.bin`**。`firmware.bin` 和标准 Intel HEX 不属于该软件接受的加密封装格式。
+
+配套 Windows 工具为 `66EC(XRGB)Ble.exe`；Mac 工具为另行提供的 `MAC键盘固件升级V1.2.dmg` 中的升级应用，未包含在本仓库内。Mac 应用为 Intel 版本，在 Apple Silicon 上运行依赖 Rosetta。
+
+操作前应确认键盘型号、硬件版本、现有引导程序和恢复方法，并备份需要保留的配置。完整操作步骤见[刷写和实机验收](firmware/README.md#刷写和实机验收)。实验 `c_scan` 版本仍需进行多键扫描、长时间运行和中断时序的实机验证。
+
+## 项目结构
+
+```text
+.
+├── README.md                 # 项目入口
+├── LICENSE                   # MIT 许可证
+├── DISCLAIMER.md             # 免责声明与第三方材料说明
+├── firmware/                 # 可独立构建的 C + 汇编工程
+│   ├── src/rom.S             # 完整指令与 ROM 数据
+│   ├── src/scan.c            # ARM C 扫描处理实现
+│   └── README.md             # 构建、验证、修改和刷写说明
+├── scripts/                  # 解包、协议、分析及 Ghidra 导出工具
+├── tests/                    # 构建验收测试
+├── recovered/                # 逆向结果、协议文档和可读算法
+│   ├── firmware/             # 固件伪代码、索引和提取表格
+│   ├── host/                 # HWI DLL 伪代码和分析结果
+│   └── readable/             # 人工整理的扫描算法和数据表
+├── analysis/                 # 标注、参考资料和验证记录
+└── requirements.txt          # 分析与验证工具的 Python 依赖
+```
+
+仓库根目录另保留原厂 V1.5.1 更新文件、Windows 升级程序和两份 DLL，作为分析输入。
+
+## 文档导航
+
+| 文档或源码 | 内容 |
+| --- | --- |
+| [构建工程说明](firmware/README.md) | 工具链安装、构建、单项验证、修改源码与刷写步骤 |
+| [逆向分析说明](recovered/REVERSE_ENGINEERING.md) | 模块入口、地址布局、恢复范围和分析限制 |
+| [通信协议](recovered/PROTOCOL.md) | HID 封装、配置命令、UART 帧和更新流程 |
+| [Mac 工具兼容性记录](firmware/mac_updater_compatibility.json) | 设备筛选、格式和更新载荷的静态分析证据 |
+| [固件函数索引](recovered/firmware/decompiled/functions.tsv) | 固件函数的地址、名称、大小和推断签名 |
+| [默认键位表](recovered/firmware/tables/default_keymap.csv) | 扫描位置、物理键编号和内置内部键码 |
+| [可读扫描算法](recovered/readable/key_scan.c) | 人工整理的扫描过滤和消抖算法摘录 |
+| [离线校验记录](analysis/verification/results.json) | 原始 ARM/x86 指令的算法与协议对照结果 |
+
+## 贡献与反馈
+
+欢迎通过 GitHub Issues 报告问题或提出改进建议，也欢迎提交 Pull Request。维护者为 `cbingb666`。
+
+- 报告问题时，请提供键盘型号、硬件与固件版本、操作系统、复现步骤和相关日志。
+- 修改构建或固件实现后，请运行相关校验和验收测试，并说明预期行为及验证范围。
+- 提交逆向结论时，请给出对应地址、指令或协议记录，区分已验证结果与推断。
+- 提交实机反馈时，请注明具体构建版本、测试条件、恢复方法和功能验收结果。
+
+## 许可证
+
+本项目作者原创的工具、代码和文档采用 [MIT License](LICENSE)。使用、修改或分发这些内容时，应保留许可证要求的版权及许可声明。
+
+MIT 授权**不涵盖**原厂固件、升级程序、DLL，以及保留原厂内容的解密镜像、反汇编、反编译伪代码、ROM 数据、重建汇编与更新包。第三方参考代码和依赖仍遵循各自许可证；本仓库的 MIT 声明不代表取得了这些材料的再授权或再分发许可。具体范围见[第三方材料与授权范围](DISCLAIMER.md#第三方材料与授权范围)。
+
+## 免责声明
+
+本项目的开发与研究仅用于个人实验目的，旨在探索固件功能与实现方式，拓展自有硬件的可玩性。此表述说明项目初衷，原创内容的使用与分发仍遵循 MIT 许可证。
+
+本项目是独立的固件研究与重建项目，未获得 NiZ 或相关厂商的官方认可、支持或背书。项目按现状提供，不保证准确性、完整性或特定硬件上的适用性。
+
+修改、刷写或运行固件可能导致设备无法启动、配置丢失、功能异常或保修受影响。现有软件与模拟校验不构成实机安全性保证；在适用法律允许的范围内，作者和贡献者不对使用本项目造成的损失承担责任。
+
+使用者应自行确认相关设备及第三方材料的使用权限，并评估操作风险。完整说明见 [DISCLAIMER.md](DISCLAIMER.md)。
