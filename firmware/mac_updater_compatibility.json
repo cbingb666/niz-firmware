@@ -1,0 +1,42 @@
+{
+  "dmg_filename": "MAC键盘固件升级V1.2.dmg",
+  "dmg_sha256": "ca557c2bed118f385b1fd8a6a8159dcfde503536e2226a2d3d9d7c0beaa4b085",
+  "bundle_identifier": "com.bluestonehk.FirmwareUpgradeProject",
+  "app_binary_sha256": "9a1be858e2cd89f44b5c6ba07356e1e35e03a8dbab955f9d4359425eeac081de",
+  "version": "1.2",
+  "architecture": "x86_64",
+  "declared_minimum_macos": "10.13",
+  "code_signature_valid_on_disk": true,
+  "gatekeeper_acceptance_assessed": false,
+  "matching_dictionary": {
+    "VendorID": "0x0483"
+  },
+  "product_id_filter_applied": false,
+  "required_max_output_report_size": 64,
+  "firmware_default_vid": "0x0483",
+  "firmware_default_pid": "0x542a",
+  "upgrade_command": "0x3a",
+  "version_command": "0xf9",
+  "scan_control_command": "0xd9",
+  "accepted_file_extension": "bin",
+  "file_format": "DES-wrapped HEX ASCII with CRLF",
+  "baseline_package_sha256": "b5dca0a3de1f36778c4ce5deb41d019d95221f654ef783ff6b837553092397fa",
+  "verification_method": "Static Mach-O disassembly and a Python mirror of the observed Foundation encoding operations; compared with scripts/niz_protocol.py, whose Windows payloads were previously verified against the original HWI DLL",
+  "mac_payload_prefixes_compared_with_verified_windows_codec": 3352,
+  "all_meaningful_payload_bytes_match": true,
+  "comparison_scope": "Command prefix, record-length byte and complete ciphertext; unused bytes after the encoded record are excluded",
+  "transfer_method": "IOHIDDeviceSetReport, output type, report ID 0, length 64",
+  "evidence_entries": {
+    "file_text_to_lines": "0x100004000 +[FileManage decryptBinary:]",
+    "colon_to_command_prefix": "0x100004110 +[FileManage upgradePackage:]",
+    "vendor_matching_dictionary": "0x100004510 -[USBConnector startMonitoringForVendorID:andProductID:error:]",
+    "output_report_size_filter": "0x100004940 -[USBConnector addUSBDevice:]",
+    "send_output_report": "0x100005b40 -[USBDevice sendOutputReport:error:]",
+    "iokit_report_send": "0x100005d10 -[USBDevice sendMessageToHostWithData:reportPage:reportType:length:error:]",
+    "firmware_record_send_loop": "0x100007e10 ___31-[ViewController startUpgrade:]_block_invoke"
+  },
+  "compatibility_conclusion": "static_file_format_and_protocol_match",
+  "application_launched": false,
+  "physical_device_detection_verified": false,
+  "physical_flash_verified": false
+}

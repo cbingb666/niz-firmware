@@ -11,7 +11,7 @@ import zipfile
 from check import verify
 
 ROOT = Path(__file__).resolve().parent
-SOURCE_FILES = ["README.md", "build.py", "check.py", "linker.ld", "package.py", "release.py",
+SOURCE_FILES = ["README.md", "build.py", "check.py", "linker.ld", "mac_updater_compatibility.json", "package.py", "release.py",
                 "requirements.txt", "setup_toolchain.py", "source_manifest.json", "toolchain.lock.json",
                 "verify_target.py", "verify_update.py", "src/rom.S", "src/scan.c"]
 
@@ -22,6 +22,8 @@ def sha256(data):
 
 def main():
     checked = verify()
+    mac_updater = json.loads((ROOT / "mac_updater_compatibility.json").read_text())
+    assert mac_updater["baseline_package_sha256"] == checked["stock"]["package_sha256"], "Mac updater record belongs to another baseline package"
     target = json.loads((ROOT / "build/c_scan/target_verification.json").read_text())
     update = json.loads((ROOT / "build/update_verification.json").read_text())
     assert target["all_match"] and target["c_scan_sha256"] == checked["c_scan"]["image_sha256"], "Run verify_target.py for these images"
@@ -69,6 +71,7 @@ def main():
     report = {"file_and_build_closure_complete": True, "physical_hardware_closure_complete": False,
               "package_validation": checked, "source_archive_rebuild": independent,
               "arm_c_scan_comparison": target, "arm_update_receiver": update,
+              "mac_updater_compatibility": mac_updater,
               "toolchain": json.loads((ROOT / "toolchain.lock.json").read_text()),
               "compiler": json.loads((ROOT / "build/stock/build.json").read_text())["compiler"],
               "hardware_status": {"matching_target_detected_by_read_only_usb_probe": False,
@@ -88,7 +91,9 @@ def main():
         "`experimental/` 下的 C 扫描版本已通过 ARM 差分与模拟更新检查，尚未验证实机时序。"
         "软件构建、封装和模拟暂存闭环完成；实机 USB 更新、LDROM 烧录、重启及键盘/RGB/BLE 验收未完成。"
         "本次只读 USB 查询未找到目标键盘。详细证据和验证边界见 `verification.json`。\n\n"
-        "在 Windows 上连接对应 66EC RGB BLE 键盘，保存配置，然后通过配套原厂软件的固件更新入口选择基线包，"
+        "可使用配套 Windows 程序，或另行提供的 `MAC键盘固件升级V1.2.dmg` 中的升级应用。"
+        "Mac 工具的文件格式及更新协议已静态确认匹配，Intel 应用在 Apple Silicon 上依赖 Rosetta，实际运行及刷写待验证。"
+        "用 USB 连接对应 66EC RGB BLE 键盘并确认显示的机型和版本，保存配置，再通过升级工具选择基线包，"
         "按其提示完成更新及重启。机型、现有引导程序和恢复路径需按实际设备确认。\n",
         encoding="utf-8")
     output_files = [dist / "66EC_RGB_BLE_stock_rebuilt.bin", dist / "experimental/66EC_RGB_BLE_c_scan_rebuilt.bin",

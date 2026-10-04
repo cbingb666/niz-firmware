@@ -32,6 +32,7 @@
   "host_project": "analysis/ghidra-project/NizHWI.gpr",
   "source_exports_are_pseudocode": true,
   "readable_algorithm": "recovered/readable/key_scan.c",
+  "mac_updater_compatibility": "firmware/mac_updater_compatibility.json",
   "rebuild": {
     "project": "firmware/README.md",
     "source_archive": "firmware/dist/niz-66ec-rebuild-src.zip",

@@ -12,6 +12,7 @@
 | [基线刷写包](firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin) | 原厂加密封装，与提供的 V1.5.1 刷写文件逐字节一致 |
 | [独立源码 ZIP](firmware/dist/niz-66ec-rebuild-src.zip) | 不包含原固件；解压即可安装工具链并重建 |
 | [完整验证报告](firmware/dist/verification.json) | 整镜像、封装、实际源码 ZIP 重建、ARM C 对照和模拟更新结果 |
+| [Mac 升级工具兼容性](firmware/mac_updater_compatibility.json) | V1.2 应用的设备筛选、固件格式、HID 协议及 3,352 条有效载荷对照 |
 | [完整汇编源码](firmware/src/rom.S) | 包含所有原程序指令和数据；正常构建不读取原二进制 |
 | [ARM C 扫描模块](firmware/src/scan.c) | 完整队列处理入口，实际链接进 `c_scan` 实验版本 |
 | [全部固件函数](recovered/firmware/decompiled/all_functions.c) | 完整 C 伪代码入口，按 ROM 地址排列 |
@@ -38,6 +39,7 @@
 - 用固件中 `0x00007ECC` 的 DES 函数模拟执行，10,051 个数据块全部与独立解密器一致。
 - `key_scan.c` 与 `0x00005E4C` 的原始 ARM 指令比较了 66 个键、两种 RGB 状态、共 1,320 帧阈值和消抖情况；事件、计数器和按下位图一致。这是指定用例的验证，不是对所有可能输入的等价证明。
 - 验证六个 ADC 列入口和十一种行选择状态；模拟了 HWI DLL 的原始 x86 解析函数，全部 3,352 个 HID 更新载荷与离线编码器一致。
+- 用户提供的 Mac 升级工具 V1.2 已静态确认设备筛选和更新协议匹配；按实际代码转换全部 3,352 条基线记录，有效载荷与已验证的 Windows 编码器一致。尚未运行该应用或进行实机更新。
 - 固件 264 个函数和 DLL 307 个函数均成功生成伪代码。主循环等三处 ARMCC 分支表已人工修正，两处函数内长跳转也已修正，避免把按键处理循环拆成假函数。
 
 以上模拟校验没有写入键盘。软件构建和封装闭环已完成，实机 USB 传输、LDROM 烧录、整机时序、重启及无线功能仍需接入对应设备验收。详细步骤和当前边界见 [构建工程说明](firmware/README.md)。
@@ -58,6 +60,8 @@ python3 -m venv .venv
 ```
 
 使用原厂升级软件时选择 `firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin`。`build/stock/firmware.bin` 是未封装镜像。实验 C 版本位于 `firmware/dist/experimental/`，硬件时序尚未验证。工具链固定为 Arm GNU 15.2.rel1；Python、工具链和跨平台安装说明见 `firmware/README.md`。
+
+Windows 可使用目录内配套的 `66EC(XRGB)Ble.exe`；Mac 可使用用户提供的 `MAC键盘固件升级V1.2.dmg`，其文件格式和更新协议与基线包匹配。Mac 应用是 Intel 版本，Apple Silicon 依赖 Rosetta。具体使用步骤与验证边界见 [刷写说明](firmware/README.md#刷写和实机验收)。
 
 ## 复现解包和算法校验
 

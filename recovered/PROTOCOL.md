@@ -61,6 +61,8 @@ HWI 使用 Windows `WriteFile` 发送 65 字节：第零字节为 Report ID 0，
 
 解包脚本输出的标准 Intel HEX 用于分析。完整重建工程的 [package.py](../firmware/package.py) 从编译镜像生成原厂加密封装，基线封装与原文件逐字节一致，可交给配套原厂升级软件。扩展后的 C 扫描镜像也通过完整记录的 ARM 更新处理检查：模拟 EEPROM 暂存数据、读回校验及完成标记均匹配。工程尚未进行实机 USB 传输和片上 LDROM 写回测试，未提供另一个直接访问设备的烧录工具。
 
+Mac `固件升级V1.2.app` 使用同一记录格式：`FileManage` 把行首 `:` 换成 `003a` 再转成字节，形成 `00 3A length ciphertext`，通过 `IOHIDDeviceSetReport` 的 Output 类型、Report ID 0 发送 64 字节。基线全部 3,352 条记录的有效字段与 Windows 编码器一致；这里没有比较记录后未使用的报告尾部字节，也没有执行实际 IOKit 传输。设备字典仅限定 VID `0x0483`，另过滤输出报告长度 64；完整静态检查信息见 [Mac 兼容性记录](../firmware/mac_updater_compatibility.json)。
+
 ## 外部模块 UART 帧
 
 `ble_send_frame` 位于 `0x6010`，复制参数到 32 字节暂存区并计算所有参数字节的八位加法和。少于十个参数字节时，帧固定为十字节，补零，校验放在偏移 9；十个或更多参数字节时，校验紧跟数据。
