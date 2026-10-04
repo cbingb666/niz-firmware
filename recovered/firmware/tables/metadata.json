@@ -1,0 +1,154 @@
+{
+  "version_string": "66EC(RGB)BLe;V1.5.1;V1.0;",
+  "des_key_literal_address": "0x00009364",
+  "des_key_literal_u32": "0x76",
+  "device": {
+    "address": "0x0000ce3b",
+    "usb_bcd": "0x110",
+    "vid": "0x0483",
+    "pid": "0x542a",
+    "ep0_max_packet": 8
+  },
+  "configuration_full": {
+    "address": "0xce4d",
+    "size": 91,
+    "interfaces": [
+      {
+        "number": 0,
+        "class": 3,
+        "subclass": 1,
+        "protocol": 1,
+        "string_index": 4,
+        "endpoints": [
+          {
+            "address": "0x83",
+            "attributes": 3,
+            "max_packet": 8,
+            "interval_ms": 1
+          }
+        ],
+        "report_descriptor_size": 65
+      },
+      {
+        "number": 1,
+        "class": 3,
+        "subclass": 0,
+        "protocol": 0,
+        "string_index": 5,
+        "endpoints": [
+          {
+            "address": "0x82",
+            "attributes": 3,
+            "max_packet": 64,
+            "interval_ms": 15
+          },
+          {
+            "address": "0x1",
+            "attributes": 3,
+            "max_packet": 64,
+            "interval_ms": 3
+          }
+        ],
+        "report_descriptor_size": 39
+      },
+      {
+        "number": 2,
+        "class": 3,
+        "subclass": 0,
+        "protocol": 0,
+        "string_index": 6,
+        "endpoints": [
+          {
+            "address": "0x84",
+            "attributes": 3,
+            "max_packet": 15,
+            "interval_ms": 1
+          }
+        ],
+        "report_descriptor_size": 161
+      }
+    ]
+  },
+  "configuration_alternate": {
+    "address": "0xcea8",
+    "size": 59,
+    "interfaces": [
+      {
+        "number": 0,
+        "class": 3,
+        "subclass": 1,
+        "protocol": 1,
+        "string_index": 4,
+        "endpoints": [
+          {
+            "address": "0x83",
+            "attributes": 3,
+            "max_packet": 8,
+            "interval_ms": 1
+          }
+        ],
+        "report_descriptor_size": 75
+      },
+      {
+        "number": 2,
+        "class": 3,
+        "subclass": 0,
+        "protocol": 0,
+        "string_index": 6,
+        "endpoints": [
+          {
+            "address": "0x84",
+            "attributes": 3,
+            "max_packet": 15,
+            "interval_ms": 1
+          }
+        ],
+        "report_descriptor_size": 161
+      }
+    ]
+  },
+  "usb_strings": [
+    {
+      "index": 0,
+      "address": "0xcf47",
+      "value": "language 0x0409"
+    },
+    {
+      "index": 1,
+      "address": "0xcf4b",
+      "value": "Milsky"
+    },
+    {
+      "index": 2,
+      "address": "0xcf59",
+      "value": "66EC-RGB"
+    },
+    {
+      "index": 3,
+      "address": "0xcf6b",
+      "value": "MS2022110005"
+    },
+    {
+      "index": 4,
+      "address": "0xcf85",
+      "value": "Keyboard"
+    },
+    {
+      "index": 5,
+      "address": "0xcf97",
+      "value": "System Control"
+    },
+    {
+      "index": 6,
+      "address": "0xcfb5",
+      "value": "Program"
+    }
+  ],
+  "matrix": {
+    "rows": 11,
+    "columns": 6,
+    "physical_key_id_address": "0x0000c47a"
+  },
+  "default_internal_code_table_address": "0x0000c4bc",
+  "default_rgb_table_address": "0x0000c582"
+}

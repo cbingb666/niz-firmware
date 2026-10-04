@@ -1,0 +1,26 @@
+address	name	comment
+00009364	des_key_literal	Original ROM uint32 value is 0x76; DES copies its first byte only.
+0000c47a	matrix_physical_key_ids	11x6 row-major physical key identifiers, 1..66.
+0000c4bc	default_internal_key_codes	66x3 internal key-code table, not USB usages.
+0000c582	default_rgb_channels	66x3 default light-channel bytes.
+0000c648	firmware_version_string	Embedded firmware/hardware version string.
+0000ce3b	usb_device_descriptor	VID 0483 PID 542a.
+0000cf20	usb_host_report_descriptor	64-byte input/output report descriptor.
+20000313	application_state	0 normal, 1 key config read, 2 RGB read, 3 counters read, 4 low-power/wake handling.
+20000360	key_event_count	Number of bytes queued at key_events.
+20000374	scan_row	Current row 0..10.
+20000375	scan_column	Current column 0..5.
+20000376	scan_record_count	Number of pending seven-byte row records.
+200003b0	ble_tx_length	UART staged frame length.
+20000c56	scan_enabled	Scanning gate, cleared during settings/update transfers.
+20000c5c	transport_is_wired	0: external UART module path; nonzero: wired path.
+20000c5d	wired_protocol	1 USB, 2 PS/2, from key event dispatch.
+20000cba	rgb_active	Selects RGB-dependent acquisition and correction coefficient.
+20000ce4	key_press_counters	66 little-endian uint32 counters.
+20000ee7	key_events	Event bit 7 denotes press; other seven bits are physical key identifier.
+20001ac4	matrix_pressed_bits	Eleven uint16 row masks.
+20001ada	matrix_debounce	66 byte counters.
+20001b1c	matrix_baseline	66 byte baseline samples.
+20001ba0	matrix_threshold	66 byte activation thresholds.
+2000310a	scan_records	256x7 byte queue: row index followed by six samples.
+2000380a	ble_tx_buffer	32-byte UART frame staging buffer.

@@ -1,0 +1,25 @@
+{
+  "input": "66EC(RGB)BLe_V1.5.1_20230520.bin",
+  "input_sha256": "b5dca0a3de1f36778c4ce5deb41d019d95221f654ef783ff6b837553092397fa",
+  "image_sha256": "8ecb2cef8172ca37a5e42a75b2748af6a8c930c174c5ae6c67776207d13fa43a",
+  "algorithm": "DES-ECB, zero padding, one length byte before each ciphertext",
+  "des_equivalent_key_hex": "7600000000000000",
+  "key_literal_address": "0x00009364",
+  "firmware_des_function_address": "0x00007ecc",
+  "record_count": 3352,
+  "record_types": {
+    "4": 1,
+    "0": 3349,
+    "5": 1,
+    "1": 1
+  },
+  "all_record_checksums_valid": true,
+  "exact_wrapper_roundtrip": true,
+  "image_base": "0x0",
+  "image_end_exclusive": "0xd150",
+  "image_size": 53584,
+  "missing_bytes": 0,
+  "hex_start_linear_address": "0xf1",
+  "initial_sp": "0x20004180",
+  "reset_vector": "0xf1"
+}

@@ -1,0 +1,7 @@
+{
+  "version": "Arm GNU Toolchain 15.2.rel1",
+  "host": "darwin-arm64",
+  "target": "arm-none-eabi",
+  "url": "https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi.tar.xz",
+  "sha256": "1938a84b7105c192e3fb4fa5e893ba25f425f7ddab40515ae608cd40f68669a8"
+}

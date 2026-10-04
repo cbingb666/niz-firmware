@@ -1,0 +1,32 @@
+{
+  "image_sha256": "8ecb2cef8172ca37a5e42a75b2748af6a8c930c174c5ae6c67776207d13fa43a",
+  "des": {
+    "records": 3352,
+    "des_blocks": 10051,
+    "all_match": true,
+    "firmware_des_entry": "0x00007ecc",
+    "key_uses_first_byte_only": true
+  },
+  "key_scan": {
+    "positions": 66,
+    "rgb_modes": 2,
+    "frames_compared": 1320,
+    "events_debounce_and_pressed_bits_all_match": true,
+    "firmware_entry": "0x00005e4c"
+  },
+  "adc_and_row_select": {
+    "adc_columns_checked": 6,
+    "row_select_states_checked": 11,
+    "all_match": true,
+    "entries": [
+      "0x000074cc",
+      "0x0000681c"
+    ]
+  },
+  "host_parser": {
+    "records_compared": 3352,
+    "all_64_byte_payloads_match": true,
+    "dll_parser_entry": "0x10003b70"
+  },
+  "elapsed_seconds": 18.384
+}

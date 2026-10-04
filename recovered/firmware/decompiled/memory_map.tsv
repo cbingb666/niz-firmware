@@ -1,0 +1,6 @@
+name	start	end	bytes	read	write	execute	initialized
+APROM	00000000	0000d14f	53584	true	false	true	true
+SRAM	20000000	20004fff	20480	true	true	false	false
+APB	40000000	401fffff	2097152	true	true	false	false
+AHB	50000000	5000ffff	65536	true	true	false	false
+CORTEX_SYSTEM	e000e000	e000ffff	8192	true	true	false	false

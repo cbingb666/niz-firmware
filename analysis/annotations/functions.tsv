@@ -1,0 +1,73 @@
+address	name	comment
+000000f0	Reset_Handler	Startup writes SYS lock and vector remap, calls SystemInit and C runtime.
+0000013c	aeabi_uidivmod	Unsigned division with remainder returned in r1.
+00000168	aeabi_idivmod	Signed division with remainder.
+00000190	aeabi_memcpy	ARM C runtime memcpy helper.
+00000238	scatterload_runtime	Copies or clears initialized memory, then branches to main via runtime thunk.
+000002b8	adc_init	Initializes ADC3 for the capacitive matrix; ADC5 is used for other measurements.
+0000037c	transport_uart_init	UART0 at 115200 baud in the wireless path; PC3 controls the external module.
+0000059c	board_init	GPIO, clock, ADC, timer, UART and interface initialization.
+00001804	rgb_timer_update	RGB update called from TMR1_IRQHandler.
+00002748	rgb_effect_dispatch	Selector 0..14; ARMCC inline jump table manually resolved.
+00003010	uart_send_staged_bytes	Writes the staged frame to UART0 using the TX-full flag.
+000031d4	ble_report_queue_service	Sends queued reports to the external wireless module.
+0000329c	ble_key_event	Maps internal key codes into reports for the UART transport.
+00003898	CLK_DisableModuleClock	NUC123 peripheral clock gate operations.
+000038b4	CLK_EnableModuleClock	NUC123 module identifier and peripheral clock gate operations.
+00003938	CLK_SetModuleClock	Selects peripheral clock source and divider using encoded module ID.
+00004054	delay_ms	Repeated SysTick polling with millisecond-scale counter.
+00004094	delay_us	SysTick polling used for ADC acquisition settling time.
+00004210	eeprom_write_block	Splits writes across 128-byte EEPROM page boundaries.
+000042c4	eeprom_write_page	Software I2C transaction to EEPROM address 0xa0.
+0000431c	eeprom_read_block	Software I2C block read.
+000043a4	eeprom_read_u8	Software I2C random byte read through PA10/PA11.
+00004520	FMC_ErasePage	FMC erase command and completion polling.
+00004554	FMC_ReadWord	FMC read command and completion polling.
+00004574	FMC_WriteWord	FMC word program command and completion polling.
+000045e8	GPIO_SetMode	Sets two-bit pin mode fields selected by pin mask.
+0000473c	usb_endpoint_init	Initializes control, programming and keyboard HID endpoints.
+000049a8	ec_timer_sample	Selects acquisition method according to RGB activity.
+000049c4	ec_sample_row_rgb	Samples all six columns then advances the 11-row mux.
+00004a34	ec_sample_column	Samples one column per call and queues a record after six columns.
+00004ab4	key_events_dispatch	Processes matrix events, mappings, function keys, repeat and macro definitions.
+00005c84	ec_keyboard_init	Loads stored calibration and thresholds, initializes matrix and scan buffers.
+00005e4c	ec_process_scan_records	11x6 matrix, baseline subtraction, 5/18-percent coupling correction, 3-frame debounce.
+00006010	ble_send_frame	Minimum 10-byte UART frame; additive 8-bit checksum.
+00006144	configuration_factory_reset	Writes factory settings, nine groups of 66 key definitions and default RGB data to EEPROM.
+0000681c	ec_select_row	Row selector: PD0/PD1/PD2, PA13/PA14; row inputs 0..10.
+00006ba4	PS2_IRQHandler	NUC123 vector IRQ24, documented as PS/2 interrupt.
+00006bcc	ps2_key_event	Encodes key events for the PS/2 peripheral.
+00007028	firmware_verify_staging_sum	Checks staged EEPROM image against the accumulated byte sum.
+00007238	host_send_press_counters	Streams 66 little-endian 32-bit counters, then 0xe6 terminator.
+00007300	host_send_key_configuration	Streams 9x66 key definitions, then 0xf6 terminator.
+000074cc	ec_read_column_adc	Active-low column gates PC12..PC8 and PA15; reads ten-bit ADC3.
+00007678	host_send_rgb_configuration	Streams the 198-byte RGB configuration, then 0xe6 terminator.
+00007710	ec_measure_idle_level	Averages fifty ADC3 readings.
+000077ac	host_command_dispatch	Dispatches HID commands for update, key configuration, RGB and counters.
+00007e7c	des_rotate_bit_buffer	Bit-buffer rotation helper used by the DES implementation.
+00007ecc	des_ecb_decrypt	Firmware DES function: key buffer zeroed, only caller key byte 0 copied; independently emulated.
+00008248	SYS_UnlockReg	Writes 0x59, 0x16, 0x88 to protected-register lock.
+00008740	host_send_version	Responds to host version command 0xf9.
+00008c80	clock_set_profile	Selects clock and PLL profiles for active and low-power modes.
+00008e50	SystemInit	Empty SystemInit hook called by Reset_Handler.
+00008e54	application_init	Loads settings, initializes EC thresholds, macros, counters and transport state.
+0000918c	firmware_update_record	Decrypts and validates Intel HEX records, stages data in EEPROM and handles completion.
+0000945c	TMR0_IRQHandler	NUC123 vector IRQ8.
+00009484	TMR1_IRQHandler	NUC123 vector IRQ9.
+000094a0	TMR2_IRQHandler	NUC123 vector IRQ10.
+000098a4	des_permute_bits	Bit-permutation helper used for DES IP, PC1 and other tables.
+000098e8	UART0_IRQHandler	NUC123 vector IRQ12, receive processing.
+00009a5c	UART_EnableInt	UART interrupt enable and NVIC setup.
+00009a80	UART_Open	UART baud-rate and line-control configuration.
+00009cdc	USBD_IRQHandler	NUC123 vector IRQ23, USB bus/setup/endpoint processing.
+0000a258	usb_key_event	Maps internal key codes into USB keyboard, extended and mouse reports.
+0000a82c	usb_report_queue_service	Services the queued USB reports.
+0000a984	report_state_clear	Clears transport report buffers and key state.
+0000acd8	usb_send_host_payload	Copies bytes into USBD hardware endpoint 3 buffer (wire endpoint 0x82).
+0000adf4	watchdog_init	Watchdog configuration.
+0000ae10	watchdog_feed	Watchdog refresh called throughout foreground loops.
+0000b490	main	Application entry called by ARM C runtime thunk at 0xc8.
+0000bc60	memory_fill	Byte fill helper.
+0000bc70	soft_i2c_write_byte	GPIO PA10 data, PA11 clock, sends MSB first and clocks ACK.
+0000bcfc	soft_i2c_start	GPIO I2C START sequence; preserves r3 in the machine code.
+0000bd2c	soft_i2c_stop	GPIO I2C STOP sequence; preserves r3 in the machine code.

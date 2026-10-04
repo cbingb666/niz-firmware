@@ -1,0 +1,9 @@
+{
+  "repo": "https://github.com/OpenNuvoton/NUC123BSP",
+  "commit": "d5d7eaaa06fa87e0e713c0b75c6b92a6c47c5323",
+  "downloaded": [
+    "NUC123.h",
+    "system_NUC123.c",
+    "startup_NUC123.s"
+  ]
+}

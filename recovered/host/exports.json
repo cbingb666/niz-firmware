@@ -1,0 +1,94 @@
+[
+  {
+    "address": "0x10001c60",
+    "name": "??0CKB75HWI@@QAE@XZ"
+  },
+  {
+    "address": "0x10001c70",
+    "name": "??1CKB75HWI@@QAE@XZ"
+  },
+  {
+    "address": "0x10001340",
+    "name": "??4CKB75HWI@@QAEAAV0@ABV0@@Z"
+  },
+  {
+    "address": "0x100023e0",
+    "name": "?DetectDevice@CKB75HWI@@QAE_NXZ"
+  },
+  {
+    "address": "0x10002430",
+    "name": "?DetectDeviceForMac@CKB75HWI@@QAEHXZ"
+  },
+  {
+    "address": "0x10002420",
+    "name": "?DetectDeviceType@CKB75HWI@@QAEHXZ"
+  },
+  {
+    "address": "0x100013f0",
+    "name": "?InstallHook@@YAXPAUHWND__@@@Z"
+  },
+  {
+    "address": "0x10001380",
+    "name": "?KeyBoardProc@@YGJHIJ@Z"
+  },
+  {
+    "address": "0x100023d0",
+    "name": "?ReadKeyboardVersion@CKB75HWI@@QAE_NPA_W@Z"
+  },
+  {
+    "address": "0x10001420",
+    "name": "?UninstallHook@@YAXXZ"
+  },
+  {
+    "address": "0x100023b0",
+    "name": "?WriteFirmwareToKeyboard@CKB75HWI@@QAE_NPADHPAUHWND__@@@Z"
+  },
+  {
+    "address": "0x10001d20",
+    "name": "?__closeDev@CKB75HWI@@QAE_NXZ"
+  },
+  {
+    "address": "0x10001cc0",
+    "name": "?__createDev@CKB75HWI@@QAE_NXZ"
+  },
+  {
+    "address": "0x10001d70",
+    "name": "?getHardwareVersion@CKB75HWI@@QAEPA_WXZ"
+  },
+  {
+    "address": "0x10002160",
+    "name": "?getKeyConfiguration@CKB75HWI@@QAE_NHHPAHH@Z"
+  },
+  {
+    "address": "0x100022e0",
+    "name": "?getKeyboardLightArea@CKB75HWI@@QAE_NPAH@Z"
+  },
+  {
+    "address": "0x100023f0",
+    "name": "?getPressCounterFromDev@CKB75HWI@@QAE_NPAH@Z"
+  },
+  {
+    "address": "0x10002340",
+    "name": "?prepare@CKB75HWI@@QAE_NXZ"
+  },
+  {
+    "address": "0x10002390",
+    "name": "?readKeyDefinationFromDev@CKB75HWI@@QAE_NPAUHWND__@@@Z"
+  },
+  {
+    "address": "0x100023a0",
+    "name": "?readKeyLightFromDev@CKB75HWI@@QAE_NXZ"
+  },
+  {
+    "address": "0x10001d90",
+    "name": "?setKeyConfiguration@CKB75HWI@@QAE_NHHPAHH@Z"
+  },
+  {
+    "address": "0x10002040",
+    "name": "?setKeyboardLightArea@CKB75HWI@@QAE_NPAH@Z"
+  },
+  {
+    "address": "0x10002380",
+    "name": "?writeKeyConfigurationToDev@CKB75HWI@@QAE_NPAUHWND__@@@Z"
+  }
+]

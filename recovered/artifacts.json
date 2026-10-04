@@ -1,0 +1,48 @@
+{
+  "inputs": {
+    "66EC(RGB)BLe_V1.5.1_20230520.bin": "b5dca0a3de1f36778c4ce5deb41d019d95221f654ef783ff6b837553092397fa",
+    "66EC(XRGB)BleHWI.dll": "cbfc5abb4ecb5c878a9a4081305202d67b15985b6231825cfcb3745cc7042883",
+    "66EC(XRGB)Ble.exe": "d0058edf7e9475b2af715b86720d9c62a18d0f2a0b235a8325e843df4b8001df",
+    "66EC(XRGB)BleRES.dll": "ad05c56fdbf3411802b20b6d33a39cfe349d58be938b067cda1c208f0bd2253f"
+  },
+  "tools": {
+    "ghidra": "12.1.4",
+    "java": "OpenJDK 23.0.1",
+    "dependencies": "requirements.txt",
+    "arm_gnu": "15.2.rel1"
+  },
+  "firmware": {
+    "functions": 264,
+    "decompiled": 264,
+    "failed": 0,
+    "instructions": 20564,
+    "instruction_bytes": 43186,
+    "function_body_bytes": 42930
+  },
+  "host_dll": {
+    "functions": 307,
+    "decompiled": 307,
+    "failed": 0,
+    "instructions": 13603,
+    "instruction_bytes": 39374,
+    "function_body_bytes": 38729
+  },
+  "verification": "analysis/verification/results.json",
+  "firmware_project": "analysis/ghidra-project/NizFirmware.gpr",
+  "host_project": "analysis/ghidra-project/NizHWI.gpr",
+  "source_exports_are_pseudocode": true,
+  "readable_algorithm": "recovered/readable/key_scan.c",
+  "rebuild": {
+    "project": "firmware/README.md",
+    "source_archive": "firmware/dist/niz-66ec-rebuild-src.zip",
+    "stock_package": "firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin",
+    "verification": "firmware/dist/verification.json",
+    "stock_entire_image_and_package_byte_identical": true,
+    "normal_build_needs_original_inputs": false,
+    "source_format": "C + GNU Thumb assembly",
+    "arm_c_scan_records_compared": 16599,
+    "stock_update_records_verified": 3352,
+    "c_scan_update_records_verified": 3376,
+    "physical_flash_verified": false
+  }
+}

@@ -1,0 +1,23 @@
+/* Address: 0x0000013c; body bytes: 44 */
+
+/* Unsigned division with remainder returned in r1. */
+
+int aeabi_uidivmod(uint param_1,uint param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  
+  iVar1 = 0;
+  uVar2 = 0x20;
+  while (uVar3 = uVar2 - 1, 0 < (int)uVar2) {
+    uVar2 = uVar3;
+    if (param_2 <= param_1 >> (uVar3 & 0xff)) {
+      param_1 = param_1 - (param_2 << (uVar3 & 0xff));
+      iVar1 = iVar1 + (1 << (uVar3 & 0xff));
+    }
+  }
+  return iVar1;
+}
+

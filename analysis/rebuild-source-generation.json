@@ -1,0 +1,299 @@
+{
+  "source_image_size": 53584,
+  "data_bytes": 10546,
+  "mnemonic_instructions": 20492,
+  "instruction_bytes": 43038,
+  "explicit_encoding_macros": 748,
+  "excluded_false_disassembly": [
+    {
+      "address": "0xc370",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc372",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc374",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc376",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc378",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc37a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc37c",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc37e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc380",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc382",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc384",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc386",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc388",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc38a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc38c",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc38e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc390",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc392",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc394",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc396",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc398",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc39a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc39c",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc39e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3a0",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3a2",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3a4",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3a6",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3a8",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3aa",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3ac",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3ae",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3b0",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3b2",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3dc",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3de",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3e0",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xc3e2",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf20",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf22",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf24",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf26",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf28",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf2a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf2e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf30",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf32",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf34",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf36",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf38",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf3a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf3e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf40",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf42",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf44",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf46",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf48",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf4a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf4c",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf4e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf50",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf52",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf54",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf56",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf58",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf5a",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf5c",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf5e",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf60",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf62",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf64",
+      "reason": "Constant tables and USB descriptors after final code function"
+    },
+    {
+      "address": "0xcf66",
+      "reason": "Constant tables and USB descriptors after final code function"
+    }
+  ],
+  "normal_build_requires_original_image": false,
+  "opaque_instruction_encodings": []
+}

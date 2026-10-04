@@ -1,0 +1,6 @@
+# Keep firmware and vendor inputs byte-identical on every platform.
+*.bin binary
+*.exe binary
+*.dll binary
+*.zip binary
+*.hex -text
