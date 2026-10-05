@@ -93,8 +93,8 @@ def wrapped_records(raw):
     return [bytes.fromhex(line[1:]) for line in raw.decode("ascii").splitlines()]
 
 
-def verify_complete(image, packed):
-    receiver = Receiver(image)
+def verify_complete(image, packed, receiver_image=None):
+    receiver = Receiver(image if receiver_image is None else receiver_image)
     records = wrapped_records(packed)
     for number, record in enumerate(records):
         receiver.send(record)

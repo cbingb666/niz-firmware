@@ -36,6 +36,8 @@ NiZ 66EC RGB BLE 键盘固件的逆向分析与可复现重建工程，基于原
 | --- | --- | --- |
 | `stock` | 完整汇编重建原厂程序 | 镜像与更新包均与 V1.5.1 原件逐字节一致；实机未验证 |
 | `c_scan` | 用 C 实现替换扫描处理入口，其余程序保持原有实现 | 已通过 ARM 行为对照与模拟更新验证；实机时序未验证 |
+| `mac_native` | 原生 Mac 系统键与背光报告，独立 V1.5.1-F.1 版本 | [构建、映射与验证边界](firmware/MAC_NATIVE.zh-CN.md)，实机未验证 |
+
 
 原厂 C 文件结构、变量名和注释无法从二进制中精确恢复。反编译生成的 C 伪代码供阅读和分析使用，不能直接作为构建输入。片上 LDROM 和外部蓝牙模块内部固件不在本项目所分析的更新镜像内。
 
@@ -82,15 +84,15 @@ python3 -m venv .venv
 
 | 生成路径 | 用途 |
 | --- | --- |
-| `firmware/build/stock/66EC_RGB_BLE_stock_rebuilt.bin` | 基线版本的原厂格式加密更新包 |
+| `firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin` | 编译自动输出的原厂格式加密更新包 |
 | `firmware/build/stock/firmware.bin` | 未封装的 APROM 镜像，供分析使用 |
 | `firmware/build/stock/firmware.elf` | 带函数和地址标签的 ARM ELF |
-| `firmware/dist/66EC_RGB_BLE_stock_rebuilt.bin` | 验证后汇总的基线更新包 |
+| `firmware/dist/experimental/66EC_RGB_BLE_V1.5.1-F.1.bin` | 编译自动输出的 Mac 原生系统键实验包 |
 | `firmware/dist/experimental/66EC_RGB_BLE_c_scan_rebuilt.bin` | 实验 C 扫描版本更新包 |
 | `firmware/dist/niz-66ec-rebuild-src.zip` | 可独立构建的源码包，不含原始固件二进制或 DLL |
 | `firmware/dist/verification.json`、`firmware/dist/SHA256SUMS` | 验证报告与交付文件的散列值 |
 
-工具链、虚拟环境、`firmware/build/` 和 `firmware/dist/` 等本地产物不纳入 Git，需要按上述步骤生成。
+每次编译会自动将升级包写入固定的 `firmware/dist/`（原厂）或 `firmware/dist/experimental/`（实验版），不需要手动复制；原始镜像、ELF 和构建记录保留在 `firmware/build/<variant>/`。工具链、虚拟环境及这些本地产物不纳入 Git。
 
 ### 复现逆向分析
 

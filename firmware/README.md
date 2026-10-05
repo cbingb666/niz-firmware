@@ -27,18 +27,18 @@ python3 -m venv .venv
 .venv/bin/python setup_toolchain.py --archive /path/to/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi.tar.xz
 ```
 
-构建产物保存在 `build/stock/`：
+每次 `build.py` 编译成功后，升级包自动输出到固定的 `dist/` 目录，无需手动复制。`stock` 放在 `dist/`；`c_scan` 和 `mac_native` 放在 `dist/experimental/`。编译工作文件和验证副本仍保存在 `build/<variant>/`：
 
 | 文件 | 用途 |
 | --- | --- |
-| `66EC_RGB_BLE_stock_rebuilt.bin` | **给原厂升级软件选择的加密刷写包，177,576 字节** |
+| `dist/66EC_RGB_BLE_stock_rebuilt.bin` | **给原厂升级软件选择的加密刷写包，177,576 字节** |
 | `firmware.bin` | 未封装的 APROM 原始字节，53,584 字节 |
 | `firmware.hex` | 标准 Intel HEX，供分析或兼容的编程器使用 |
 | `firmware.elf` | 完整 ARM ELF，带函数和 ROM 地址标签 |
 | `firmware.map`、`firmware.disassembly.txt` | 链接布局和反汇编 |
 | `build.json`、`compiler.log` | 编译器、输出散列和构建诊断 |
 
-原厂升级软件需要加密刷写包；`firmware.bin` 和标准 HEX 不是该软件接收的封装格式。直接编程器刷写还需要明确 MCU 料号、Flash 配置和 LDROM 保留方式，本工程未验证该路径。
+编译脚本先独立解密核对完整包格式，再输出升级包、同名 `.build.json` 和 `SHA256SUMS`。编译失败不覆盖上一份 dist 包；匹配当前镜像/包的 Mac ARM 报告会同步输出，不匹配的旧报告移入 superseded。原厂升级软件需要加密刷写包；`firmware.bin` 和标准 HEX 不是该软件接收的封装格式。直接编程器刷写还需要明确 MCU 料号、Flash 配置和 LDROM 保留方式，本工程未验证该路径。
 
 ## 验证及 C 模块版本
 
@@ -83,6 +83,10 @@ Mac 工具读取 CRLF 分隔的加密 HEX 文本，把每行冒号换成 `003a` 
 4. 实机通过基线版本后，再验证实验 `c_scan` 的多键扫描、长时间运行和中断时序，记录恢复手段和结果。
 
 Windows 和 Mac 工具的实际运行、USB 传输、LDROM 将 EEPROM 内容写回 APROM 的过程以及上述实机功能均待现场验证。`c_scan` 已通过 ARM 行为和更新暂存检查，硬件时序状态仍为未验证。
+
+## Mac 原生系统键实验版
+
+新增 `mac_native` 独立构建，版本为 V1.5.1-F.1。原生 HID 映射、构建命令和实机限制见 [Mac 实验固件](MAC_NATIVE.zh-CN.md)。编译后升级包自动进入 `dist/experimental/`；它不属于 stock 的逐字节一致性结论。原有 `release.py` 仍用于 stock/c_scan 的完整验证与源码归档。
 
 ## 修改源码
 
